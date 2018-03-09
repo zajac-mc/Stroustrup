@@ -1,18 +1,34 @@
-// Marcin Zajac 08 03 2018
-// Stroustrup Rozdzial 05 H02
+// Marcin Zajac 09 03 2018
+// Stroustrup Rozdzial 05 H03
 
 #include "../../../std_lib_facilities.h"
 
+const double c_min = -273.15;
+
 double ctok(double c) // Konwertuje stopnie w skali Celcjusza na skale Kelwina
 {
-	int k = c + 273.15;
-	return int
+	double k = c + 273.15;
+	return k;
 }
 
 int main()
+try
 {
 	double c = 0; // Zmienna do odbierania danych wejsciowych
-	cin >> d;	// Pobiernanie temperatury do zmiennej wejsciowej
-	double k = ctok("c"); // konwersja temperatury
-	Cout << k << endl;	// drukowanie temperatury
+	cout << "Podaj temperature w C, ktora chcesz przekonwertowac na K: ";
+	cin >> c;	// Pobiernanie temperatury do zmiennej wejsciowej
+	if (c < c_min) error("Podano temperature ponizej zera absolutnego",c);
+	double k = ctok(c); // konwersja temperatury
+	cout << k << endl;	// drukowanie temperatury
+	keep_window_open();
+}
+catch (exception& e) {
+	cerr << "Blad: " << e.what() << endl;
+	keep_window_open();
+	return 1;
+}
+catch (...) {
+	cerr << "Nieznany typ wyjatku!\n";
+	keep_window_open();
+	return 2;
 }
