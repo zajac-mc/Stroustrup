@@ -1,8 +1,9 @@
-// Marcin Zajac 09 03 2018
-// Stroustrup Rozdzial 05 H06
+// Marcin Zajac 12 03 2018
+// Stroustrup Rozdzial 05 H09
 
 #include "../../../std_lib_facilities.h"
 
+bool zadanie_9 = true;	// przelacznik dla zadania 9, aby po jego wylaczeniu program dzialal normalnie
 const double c_min = -273.15;
 const double roznica_KC = 273.15;
 const double k_min = 0;
@@ -24,12 +25,18 @@ double ktoc(double k)   //Konwertuje z K na C
 double ctof(double c)   // Z C na F
 {
 	if (c < c_min) error("Ponizej zera absolutnego!");
+	if (zadanie_9) {
+		int x_9 = narrow_cast<int>(9.0 / 5.0*c + 32);
+	}
 	return 9.0 / 5.0*c + 32;
 }
 
 double ftoc(double f)	// Z F na C
 {
 	if (f < f_min) error("Podano temperature ponizej zera absolutnego(F)", f);
+	if (zadanie_9) {
+		int x_9 = narrow_cast<int>((f - 32) * 5.0 / 9.0);
+	}
 	return (f - 32) * 5.0 / 9.0;
 }
 
