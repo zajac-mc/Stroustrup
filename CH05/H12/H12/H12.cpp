@@ -1,5 +1,5 @@
 // Marcin Zajac 14 03 2018
-// Stroustrup Rozdzial 05 H12
+// Stroustrup Rozdzial 05 H13
 
 /*
 Program 'Byki i Krowy'
@@ -8,8 +8,36 @@ Program 'Byki i Krowy'
 #include"../../../std_lib_facilities.h"
 
 const int rozmiar_wektora = 4;
-const char znak_konca = '|';
+const char znak_konca_rundy = '|';
+const char znak_konca_gry = '!';
 bool test_mode = false;
+
+void show_info() {
+	cout << "BYKI I KROWY\n\n"
+		<< "Program w pamieci ma wektor czterech cyfr z zakresu od 0 do 9.\n"
+		<< "Zadaniem gracza jest odgadnac te cyfry w kilku probach.\n"
+		<< "Jesli do odgadniecia jest liczba 1234, a gracz wpisze 1359,\n"
+		<< "program wydrukuje: \"1 byk i 1 krowa\", poniewaz gracz odgadl jedna cyfre\n"
+		<< "i podal ja na wlasciwej pozycji (byk) oraz odgadl druga,\n"
+		<< "ale podal ja na zlej pozycji (krowa). Gra toczy sie, az uzytkownik zdobedzie\n"
+		<< "cztery byki, tzn. odgadnie wszystkie cztery liczby\n"
+		<< "i ustawi je na wlasciwych pozycjach.\n\n";
+}
+
+void zdobadz_ziarno() {
+	cout << "W celu otrzymania losowych wartosci wektora, ktory bedziesz zgadywac, podaj liczbe" << endl
+		<< "(dana liczba genereuje zawsze takie same wartosci): ";
+	int n;
+	cin >> n;
+	srand(n);
+}
+
+vector<int> tworz_losowy_wektor() {
+	vector<int> v;
+	for (int i = 0; i < rozmiar_wektora; ++i)
+		v.push_back(randint(9));
+	return v;
+}
 
 /*Funkcja tworzy wektor 0 1 2 3*/
 vector<int> inicjalizuj_wektor() {
@@ -97,50 +125,55 @@ vector<int> licz_zwierzeta_2018(vector<int> v_c, vector<int> v_p)	// v_c - wekto
 	return zwierzeta;
 }
 
+void jedna_runda(vector<int> v_c) {	// v_c - wektor do odgadniecia
+	vector<int> v_player;
+	if (test_mode) {
+		show_vector(v_player, "v_player");
+		cout << endl;
+	}
+
+	char ch_r = ' ';
+	vector<int> wyniki;
+	while (ch_r != znak_konca_rundy) {
+		v_player = get_vector_from_player();
+
+		wyniki = licz_zwierzeta_2018(v_c, v_player);
+		cout << "Byki: " << wyniki[0] << ", krowy: " << wyniki[1] << endl;
+
+		if (wyniki[0] == rozmiar_wektora) {
+			ch_r = znak_konca_rundy;
+			cout << "Gratulacje! Udalo sie Tobie odgadnac prawidlowo caly wektor!\n";
+		}
+		else {
+			cout << "Jesli chesz grac dalej wprowadz dowolny znak, aby zakonczyc runde wprowadz '|': ";
+			cin >> ch_r;
+		}
+	}
+
+}
+
 
 
 int main()
 try {
-	cout << "BYKI I KROWY\n\n"
-		<< "Program w pamieci ma wektor czterech cyfr z zakresu od 0 do 9.\n"
-		<< "Zadaniem gracza jest odgadnac te cyfry w kilku probach.\n"
-		<< "Jesli do odgadniecia jest liczba 1234, a gracz wpisze 1359,\n"
-		<< "program wydrukuje: \"1 byk i 1 krowa\", poniewaz gracz odgadl jedna cyfre\n"
-		<< "i podal ja na wlasciwej pozycji (byk) oraz odgadl druga,\n"
-		<< "ale podal ja na zlej pozycji (krowa). Gra toczy sie, az uzytkownik zdobedzie\n"
-		<< "cztery byki, tzn. odgadnie wszystkie cztery liczby\n"
-		<< "i ustawi je na wlasciwych pozycjach.\n\n";
+	show_info();
+
+	zdobadz_ziarno();
 
 	vector<int> v_comp;	// wektor liczb komputera
-	v_comp = inicjalizuj_wektor();
-	if (v_comp.size() != rozmiar_wektora) error("Nieprawidlowy rozmiar wektora!\n");
-	if (test_mode) {
-		show_vector(v_comp,"v_comp");
-		cout << endl;
-	}
 
-	vector<int> v_player;
-	if (test_mode) {
-		show_vector(v_player,"v_player");
-		cout << endl;
-	}
-		
 	char ch = ' ';
-	vector<int> wyniki;
-	while (ch != znak_konca) {
-		v_player = get_vector_from_player();
-				
-		wyniki = licz_zwierzeta_2018(v_comp, v_player);
-		cout << "Byki: " << wyniki[0] << ", krowy: " << wyniki[1] << endl;
+	while (ch!= znak_konca_gry) {
+		v_comp = tworz_losowy_wektor();
+		if (v_comp.size() != rozmiar_wektora) error("Nieprawidlowy rozmiar wektora!\n");
+		if (test_mode) {
+			show_vector(v_comp, "v_comp");
+			cout << endl;
+		}
 
-		if (wyniki[0]==rozmiar_wektora) {
-			ch = znak_konca;
-			cout << "Gratulacje! Udalo sie Tobie odgadnac prawidlowo caly wektor!\n";
-		}
-		else {
-			cout << "Jesli chesz grac dalej wprowadz dowolny znak, aby zakonczyc wprowadz '|': ";
-			cin >> ch;
-		}
+		jedna_runda(v_comp);
+		cout << "Aby zakonczyc gre wprowadz: '" << znak_konca_gry <<"', wprowadzenie innego znaku rozpocznie kolejna runde:)\n";
+		cin >> ch;
 	}
 		
 	keep_window_open();
