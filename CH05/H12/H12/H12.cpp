@@ -1,4 +1,4 @@
-// Marcin Zajac 12 03 2018
+// Marcin Zajac 14 03 2018
 // Stroustrup Rozdzial 05 H12
 
 /*
@@ -9,6 +9,7 @@ Program 'Byki i Krowy'
 
 const int rozmiar_wektora = 4;
 const char znak_konca = '|';
+bool test_mode = false;
 
 /*Funkcja tworzy wektor 0 1 2 3*/
 vector<int> inicjalizuj_wektor() {
@@ -19,7 +20,6 @@ vector<int> inicjalizuj_wektor() {
 	return v;
 }
 
-
 /*Funkcja tworzy wektor x x x x*/
 vector<int> inicjalizuj_wektor_x(int x) {
 	if (x < 0 || x >9) error("Niepoprawna parametr fukcji(0-9)", x);
@@ -29,7 +29,6 @@ vector<int> inicjalizuj_wektor_x(int x) {
 	}
 	return v;
 }
-
 
 vector<int> get_vector_from_player() {
 	vector<int> v;
@@ -56,85 +55,12 @@ vector<int> get_vector_from_player() {
 	return v;
 }
 
-/*Funkcja testowa pokazujaca zawartosc wektorow*/
-void show_vector(vector<int> v) {
-	cout << endl;
+/*Funkcja testowa pokazujaca zawartosc wektora oraz jego nazwe*/
+void show_vector(vector<int> v, string v_name) {
+	cout << endl<< v_name << ": ";
 	for (int i = 0; i < v.size(); ++i)
 		cout << v[i] << ' ';
-}
-
-int ile_bykow(vector<int> v_to_guess, vector<int> v_players) {
-	if (v_to_guess.size() != rozmiar_wektora) error("Nieprawidlowy rozmiar wektora do odgadniecia!", v_to_guess.size());
-	if (v_players.size() != rozmiar_wektora) error("Rozmiar wektora gracza jest nieprawidlowy!", v_players.size());
-	int byki = 0;
-	for (int i = 0; i < v_to_guess.size(); ++i)
-		if (v_to_guess[i] == v_players[i]) ++byki;
-	return byki;
-}
-
-int ile_krow(vector<int> v_to_guess, vector<int> v_players) {
-	if (v_to_guess.size() != rozmiar_wektora) error("Nieprawidlowy rozmiar wektora do odgadniecia!", v_to_guess.size());
-	if (v_players.size() != rozmiar_wektora) error("Rozmiar wektora gracza jest nieprawidlowy!", v_players.size());
-	bool krowa = false;
-	vector<int> already_checked(rozmiar_wektora, 0);
-	int krowy = 0;
-	
-	/*for (int i = 0; i < v_to_guess.size(); ++i) {	//	Sprawdza/porownuje kazdy element wektora do odgadniecia
-		if (v_to_guess[i] != v_players[i])		//	Warunek "jesli nie byk"
-			for (int j = 0; j < v_players.size(); ++j)	// Z kazdym elementem wektora podanego przez gracza
-				if (!already_checked[j] && v_players[j] == v_to_guess[i]) {// Jesli dany element podany przez gracza nie byl jeszcze wykorzystany do wyznaczenia "krowy" i jesli jest "krowa"
-					krowa = true;	// oznaczam, ze jest krowa
-					already_checked[j] = 1;	// oznaczam, ze zostal juz wykorzystany, aby nie porownywac z tym elementem ponownie
-				}
-		if (krowa) {
-			++krowy;
-			krowa = false;
-		}
-	}*/
-	/*for (int i = 0; i < v_to_guess.size(); ++i)
-		if (v_to_guess[i] != v_players[i]) {		// Warunek "jesli nie byk"
-			for (int j = 0; j < v_players.size(); ++j)
-					if (v_to_guess[i] == v_players[j] && !already_checked[j]) {
-						krowa = true;
-						already_checked[j] = true;
-					}
-						if (krowa) ++krowy;
-				}
-			krowa = false;
-		}
-	*/
-	/*for (int i = 0; i < v_to_guess.size(); ++i) {
-		if (v_to_guess[i] != v_players[i])
-			for (int j = 0; j < v_players.size();++j)
-				if(v_to_guess[i]==v_players[j])
-					krowa = true;
-		if (krowa)++krowy;
-		krowa = false;
-	}*/
-
-
-	// A moze by tak zaczac od j=i -- tak tez nie:(
-	/*for (int i = 0; i < v_to_guess[i]; ++i) {
-		if(v_to_guess[i]!=v_players[i])
-			for (int j = i; j < v_players.size();++j) // <_______________________
-	}*/
-	return krowy;
-}
-
-vector<int> get_score(vector<int> v_to_guess, vector<int> v_players) {
-	if (v_to_guess.size() != rozmiar_wektora) error("Nieprawidlowy rozmiar wektora do odgadniecia!", v_to_guess.size());
-	if (v_players.size() != rozmiar_wektora) error("Rozmiar wektora gracza jest nieprawidlowy!", v_players.size());
-	int byki = 0;
-	int krowy = 0;
-
-	for (int i = 0; i < v_to_guess.size(); ++i) {
-		;
-	}
-
-	vector<int> wynik(2);
-	wynik[0] = byki;
-	wynik[1] = krowy;
-	return wynik;
+	cout << endl;
 }
 
 
@@ -143,40 +69,10 @@ vector<int> get_score(vector<int> v_to_guess, vector<int> v_players) {
 // oraz liczbe krow: liczba wystapien tej samej cyfry na roznych pozycjach
 // funkcja zwraca dwuelementowy wektor, gdzie [0] informuje o liczbie bykow,
 // a [1] o liczbie krow
-// v_c = [2 2 2 2]; v_p = [2 2 1 2] <---- !!!blad
-vector<int> licz_zwierzeta(vector<int> v_c, vector<int> v_p)	// v_c - wektor komputera; v_p - wektor gracza
+vector<int> licz_zwierzeta_2018(vector<int> v_c, vector<int> v_p)	// v_c - wektor komputera; v_p - wektor gracza
 {
-	vector<int> zwierzeta(2);
-	zwierzeta[0] = 0;       // liczba bykow
-	zwierzeta[1] = 0;       // liczba krow
-
-	for (int i = 0; i<v_c.size(); ++i) {
-		if (v_c[i] == v_p[i]) {
-			++zwierzeta[0];
-			v_c[i] = -1;
-			v_p[i] = -2;
-		}
-		else {
-			for (int j = 0; j<i; ++j)
-				if (v_c[i] == v_p[j]) {
-					++zwierzeta[1];
-					v_c[i] = -1;
-					v_p[j] = -2;
-				}
-			for (int j = i + 1; j<v_p.size(); ++j)
-				if (v_c[i] == v_p[j]) {
-					++zwierzeta[1];
-					v_c[i] = -1;
-					v_p[j] = -2;
-				}
-		}
-	}
-
-	return zwierzeta;
-}
-
-vector<int> licz_zwierzeta_2(vector<int> v_c, vector<int> v_p)	// v_c - wektor komputera; v_p - wektor gracza
-{
+	if (v_c.size() != rozmiar_wektora) error("Nieprawidlowy rozmiar wektora do odgadniecia!", v_c.size());
+	if (v_p.size() != rozmiar_wektora) error("Rozmiar wektora gracza jest nieprawidlowy!", v_p.size());
 	vector<int> zwierzeta(2);
 	zwierzeta[0] = 0;       // liczba bykow
 	zwierzeta[1] = 0;       // liczba krow
@@ -184,10 +80,10 @@ vector<int> licz_zwierzeta_2(vector<int> v_c, vector<int> v_p)	// v_c - wektor k
 	for (int i = 0; i < v_c.size(); ++i) {
 		if (v_c[i] == v_p[i]) {
 			++zwierzeta[0];
-			v_c[i] = -1;
-			v_p[i] = -2;
-		}
-	}
+			v_c[i] = -1;		// Wykorzystuje wartosc -1 do oznaczenia, ze element v_c[i] zostal juz wykorzystany do obliczenia bykow,
+			v_p[i] = -2;		// aby nie brac go pod uwage w dalszych obliczeniach. Analogicznie v_p[i] = -2.
+		}						// Korzystam z wartosci spoza zakresu dostepnego dla gracza, roznych w kazdym wektorze,
+	}							// aby przy dalszym obliczaniu krow nie powodowac bledow
 
 	for (int i = 0; i < v_c.size(); ++i) {
 		for (int j = 0; j < v_c.size(); ++j) {
@@ -198,29 +94,6 @@ vector<int> licz_zwierzeta_2(vector<int> v_c, vector<int> v_p)	// v_c - wektor k
 			}
 		}
 	}
-/*
-	for (int i = 0; i<v_c.size(); ++i) {
-		if (v_c[i] == v_p[i]) {
-			++zwierzeta[0];
-			v_c[i] = -1;
-			v_p[i] = -2;
-		}
-		else {
-			for (int j = 0; j<i; ++j)
-				if (v_c[i] == v_p[j]) {
-					++zwierzeta[1];
-					v_c[i] = -1;
-					v_p[j] = -2;
-				}
-			for (int j = i + 1; j<v_p.size(); ++j)
-				if (v_c[i] == v_p[j]) {
-					++zwierzeta[1];
-					v_c[i] = -1;
-					v_p[j] = -2;
-				}
-		}
-	}
-	*/
 	return zwierzeta;
 }
 
@@ -241,39 +114,26 @@ try {
 	vector<int> v_comp;	// wektor liczb komputera
 	v_comp = inicjalizuj_wektor();
 	if (v_comp.size() != rozmiar_wektora) error("Nieprawidlowy rozmiar wektora!\n");
-	/*Testowe wyswietlenie wektora przechowywanego przez komputer*/
-	if (true) {
-		show_vector(v_comp);
+	if (test_mode) {
+		show_vector(v_comp,"v_comp");
 		cout << endl;
 	}
 
-//	vector<int> v_player = get_vector_from_player();
 	vector<int> v_player;
-	/*Testowe wyswietlenie wektora wprowadzonego przez gracza*/
-	if (true) {
-		show_vector(v_player);
+	if (test_mode) {
+		show_vector(v_player,"v_player");
 		cout << endl;
 	}
-
-//	cout << "Zdobywasz " << ile_bykow(v_comp, v_player) << " bykow" << endl;
-//	cout << "oraz " << ile_krow(v_comp, v_player) << " krow" << endl;
-	
+		
 	char ch = ' ';
-	bool victory = false;
 	vector<int> wyniki;
 	while (ch != znak_konca) {
 		v_player = get_vector_from_player();
+				
+		wyniki = licz_zwierzeta_2018(v_comp, v_player);
+		cout << "Byki: " << wyniki[0] << ", krowy: " << wyniki[1] << endl;
 
-		cout << "Zdobywasz " << ile_bykow(v_comp, v_player) << " bykow" << endl;
-		cout << "oraz " << ile_krow(v_comp, v_player) << " krow" << endl;
-
-		wyniki = licz_zwierzeta(v_comp,v_player);
-		cout << "Licz zwierzeta- byki: " << wyniki[0] << ", krowy: " << wyniki[1] << endl;
-
-		wyniki = licz_zwierzeta_2(v_comp, v_player);
-		cout << "---> Licz zwierzeta_2- byki: " << wyniki[0] << ", krowy: " << wyniki[1] << endl;
-
-		if (ile_bykow(v_comp, v_player) == rozmiar_wektora) {
+		if (wyniki[0]==rozmiar_wektora) {
 			ch = znak_konca;
 			cout << "Gratulacje! Udalo sie Tobie odgadnac prawidlowo caly wektor!\n";
 		}
