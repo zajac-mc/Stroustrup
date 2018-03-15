@@ -18,6 +18,7 @@ void czytaj_pary() {
 	string dzien;
 	int liczba;
 	cin >> dzien >> liczba;
+	if (!cin) error("Pojawil sie blad wczytujac: "+dzien,liczba);
 	if (dzien == "Poniedzialek" || dzien == "poniedzialek" || dzien == "pn" || dzien == "Pn")
 		pn.push_back(liczba);
 	else if (dzien == "Wtorek" || dzien == "wtorek" || dzien == "Wt" || dzien == "wt")
