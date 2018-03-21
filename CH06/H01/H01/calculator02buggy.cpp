@@ -1,3 +1,5 @@
+// Marcin Zajac 20 03 2018
+// Stroustrup Rozdzial 06 H01
 
 //
 // This is example code from Chapter 6.7 "Trying the second version" of
@@ -21,7 +23,7 @@ Happy hunting!
 
 //------------------------------------------------------------------------------
 
-class Token{
+class Token {
 public:
 	char kind;        // what kind of token
 	double value;     // for numbers: a value 
@@ -113,7 +115,7 @@ double primary()
 		double d = expression();
 		t = ts.get();
 		if (t.kind != ')') error("')' expected");
-			return d;
+		return d;
 	}
 	case '8':            // we use '8' to represent a number
 		return t.value;  // return the number's value
@@ -182,7 +184,7 @@ void show_info() {
 	cout << "Witaj w naszym prostym kalkulatorze." << endl
 		<< "W wyrazeniach stosuj liczby zmiennoprzecinkowe." << endl;
 	cout << "Obslugiwane operatory: (, ), +, -, * oraz / " << endl
-		<<" aby wyswietlic wynik wpisz: =" << endl
+		<< " aby wyswietlic wynik wpisz: =" << endl
 		<< "w celu zakonczenia pracy z programem wpisz 'x'.\n";
 }
 
