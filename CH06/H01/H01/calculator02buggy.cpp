@@ -1,5 +1,5 @@
 // Marcin Zajac 21 03 2018
-// Stroustrup Rozdzial 06 H02
+// Stroustrup Rozdzial 06 H03
 
 //
 // This is example code from Chapter 6.7 "Trying the second version" of
@@ -22,6 +22,18 @@ Happy hunting!
 #include "../../../std_lib_facilities.h"
 
 //------------------------------------------------------------------------------
+double silnia(double val)
+{
+	if (val < 0)error("Nie mozna obliczyc silni");
+	double wynik = 1;
+
+	for (int i = 1; i <= val; ++i)	// Przyjmujemy, ze 0! = 1
+		wynik *= i;
+	return wynik;
+}
+
+//------------------------------------------------------------------------------
+
 
 class Token {
 public:
@@ -79,6 +91,7 @@ Token Token_stream::get()
 	switch (ch) {
 	case '=':    // for "print"
 	case 'x':    // for "exit"
+	case '!':
 	case '{':case '}':
 	case '(': case ')': case '+': case '-': case '*': case '/':
 		return Token(ch);        // let each character represent itself
@@ -126,8 +139,17 @@ double primary()
 		return d;
 	}
 	case '8':            // we use '8' to represent a number
+	{
+		Token t2 = ts.get();
+		if (t2.kind == '!') 
+		{ 
+			return silnia(t.value);
+		}
+		else ts.putback(t2);
 		return t.value;  // return the number's value
-	default:
+
+	}
+		default:
 		error("primary expected");
 	}
 }
