@@ -1,3 +1,6 @@
+// Marcin Zajac 21 03 2018
+// Stroustrup Rozdzial 06 H04
+
 // Bjarne Stroustrup 7/25/2009
 // Chapter 4 Exercise 19
 
@@ -14,25 +17,43 @@ output the pairs
 */
 
 
+class Name_value
+{
+public:
+	Name_value(string s,double v);
 
-int main()
+//private:
+
+	string name;
+	double value;
+};
+
+
+Name_value::Name_value(string s, double v):name(s),value(v)
+{
+}
+
+
+int main()	
 try
 {
 	vector<string> names;
 	vector<int> scores;
 
+	vector<Name_value> lista;
+
 	string n;
 	int v;
 
-	while (cin >> n >> v && n != "NoName") {	// read string int pair
-		for (int i = 0; i<names.size(); ++i)
-			if (n == names[i]) error("duplicate: ", n); // chek for duplicate
-		names.push_back(n);
-		scores.push_back(v);
+	while (cin >> n >> v && n != "NoName") {
+		for (int i = 0; i < lista.size(); ++i)
+			if (n == lista[i].name) error("duplicate: ", n);
+		Name_value nv(n, v);
+		lista.push_back(nv);
 	}
 
-	for (int i = 0; i<names.size(); ++i)
-		cout << '(' << names[i] << ',' << scores[i] << ")\n";
+	for (int i = 0; i < lista.size(); ++i)
+		cout << '(' << lista[i].name << ',' << lista[i].value << ')' << endl;
 
 	keep_window_open("~");	// For some Windows(tm) setups
 }
