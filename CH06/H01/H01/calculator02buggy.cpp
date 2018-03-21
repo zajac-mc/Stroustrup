@@ -1,5 +1,5 @@
-// Marcin Zajac 20 03 2018
-// Stroustrup Rozdzial 06 H01
+// Marcin Zajac 21 03 2018
+// Stroustrup Rozdzial 06 H02
 
 //
 // This is example code from Chapter 6.7 "Trying the second version" of
@@ -79,6 +79,7 @@ Token Token_stream::get()
 	switch (ch) {
 	case '=':    // for "print"
 	case 'x':    // for "exit"
+	case '{':case '}':
 	case '(': case ')': case '+': case '-': case '*': case '/':
 		return Token(ch);        // let each character represent itself
 	case '.':
@@ -110,6 +111,13 @@ double primary()
 {
 	Token t = ts.get();
 	switch (t.kind) {
+	case '{':    // handle '(' expression ')'
+	{
+		double d = expression();
+		t = ts.get();
+		if (t.kind != '}') error("'}' expected");
+		return d;
+	}
 	case '(':    // handle '(' expression ')'
 	{
 		double d = expression();
