@@ -1,6 +1,9 @@
 // Marcin Zajac 28 03 2018
 // Stroustrup Rozdzial 06 H06
 
+// test - reminder
+
+
 /*
 Sentence:
 	Noun Verb
