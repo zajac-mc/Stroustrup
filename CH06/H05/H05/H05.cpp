@@ -2,6 +2,7 @@
 // Stroustrup Rozdzial 06 H06
 
 // test - reminder
+// test - reminder 2
 
 
 /*
