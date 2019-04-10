@@ -1,4 +1,4 @@
-// Marcin Zajac 28 03 2018
+// Marcin Zajac 10 04 2018
 // Stroustrup Rozdzial 06 H06
 
 
