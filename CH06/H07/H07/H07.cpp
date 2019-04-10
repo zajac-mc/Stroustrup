@@ -7,15 +7,15 @@ Napisz gramatyke dla wyrazen logicznych
 
 F1:
 	F2
-	F1 | F2
+	F1 "|" F2
 F2:
 	F3
-	F2 ^ F3
+	F2 "^" F3
 F3:
 	F4
-	F3 & F4
+	F3 "&" F4
 F4:
 	x
-	!x
-	~x
+	"!"x
+	"~"x
 */
