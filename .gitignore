@@ -11,6 +11,7 @@
 *.vcxproj
 *.filters
 CH02/
+_tester/
 
 # User-specific files
 *.suo
