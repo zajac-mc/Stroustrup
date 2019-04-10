@@ -11,6 +11,8 @@
 *.vcxproj
 *.filters
 CH02/
+
+# Projekt do testowania nowych funkcji i pomyslow
 _tester/
 
 # User-specific files
